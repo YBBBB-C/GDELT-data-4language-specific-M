@@ -1,0 +1,22 @@
+--- for each source language, we select about 7k lines, marking its 
+--Chinese table
+
+CREATE OR REPLACE TABLE `finnews02.FinNews_US.FinNews_zh` AS
+SELECT
+  DocumentIdentifier AS url,
+  V2Themes,
+  V2Tone,
+  GCAM,  -- or Extras，if analyse emotion
+  _PARTITIONTIME AS ts,
+  'zh' AS lang
+FROM `gdelt-bq.gdeltv2.gkg_partitioned`
+WHERE 
+  _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')
+  AND TranslationInfo LIKE '%srclc:zho%'
+  AND (
+    V2Themes LIKE '%ECONOMY%' OR 
+    V2Themes LIKE '%FINANCE%' OR 
+    V2Themes LIKE '%BUSINESS%' OR 
+    V2Themes LIKE '%MARKET%'
+  )
+LIMIT 7000;
