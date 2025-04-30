@@ -24,3 +24,11 @@ Corruption, economic misconduct
 Banking, loans
 Regulatory, legal
 Income disparity, wealth disparity
+
+
+## to do 
+what to do with GCAM tag
+1. Train a multi-label classifier to predict sentiment classification with GCAM
+2. Constructing a Trend Chart of Sentiment Changes (Time Series)
+3. Federated modeling with summary content: GCAM + Content Embedding + Summary
+4. ** Calculate differences in economic discourse bias between different languages** 
