@@ -1,0 +1,41 @@
+-- Get financial events that have both Chinese, Spanish, Arabic and English reports
+WITH multilingual_events AS (
+  SELECT
+    m.GLOBALEVENTID,
+    COUNT(DISTINCT CASE WHEN m.MentionDocTranslationInfo LIKE '%srclc:zho%' THEN 1 END) AS has_chinese,
+    COUNT(DISTINCT CASE WHEN m.MentionDocTranslationInfo LIKE '%srclc:spa%' THEN 1 END) AS has_spanish,
+    COUNT(DISTINCT CASE WHEN m.MentionDocTranslationInfo LIKE '%srclc:ara%' THEN 1 END) AS has_arabic,
+    COUNT(DISTINCT CASE WHEN m.MentionDocTranslationInfo IS NULL THEN 1 END) AS has_english
+  FROM `gdelt-bq.gdeltv2.eventmentions` AS m
+  JOIN `gdelt-bq.gdeltv2.gkg_partitioned` AS g
+    ON m.MentionIdentifier = g.DocumentIdentifier
+  JOIN `gdelt-bq.gdeltv2.events` AS e
+    ON m.GLOBALEVENTID = e.GLOBALEVENTID
+  WHERE 
+    (_PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')) 
+    AND (g.Themes LIKE '%ECONOMY%' OR g.Themes LIKE '%FINANCE%' OR g.Themes LIKE '%BUSINESS%' OR g.Themes LIKE '%MARKET%')
+    AND e.Year IN (2022, 2023, 2024)
+  GROUP BY m.GLOBALEVENTID
+  HAVING has_chinese > 0 AND has_spanish > 0 AND has_arabic > 0 AND has_english > 0
+  LIMIT 50  -- test for 50 records
+)
+
+SELECT 
+  m.GLOBALEVENTID,
+  m.MentionIdentifier AS url,
+  m.MentionDocTranslationInfo,
+  CASE 
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:zho%' THEN 'zh'
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:spa%' THEN 'es'
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:ara%' THEN 'ar'
+    WHEN m.MentionDocTranslationInfo IS NULL THEN 'en'
+    ELSE 'other' 
+  END AS lang,
+  m.MentionDocTone,
+  e.SQLDATE
+FROM `gdelt-bq.gdeltv2.eventmentions` AS m
+JOIN multilingual_events AS me
+  ON m.GLOBALEVENTID = me.GLOBALEVENTID
+JOIN `gdelt-bq.gdeltv2.events` AS e
+  ON m.GLOBALEVENTID = e.GLOBALEVENTID
+ORDER BY m.GLOBALEVENTID, lang;
