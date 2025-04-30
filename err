@@ -1,0 +1,99 @@
+--problem code
+--  use four subqueries to sample (7000 each) and put them in a public CTE
+WITH t_lang_sample AS (
+
+  ------------------------------------------------------------------
+  -- Chinese 7k
+  ------------------------------------------------------------------
+  (SELECT 'zh' AS lang, g.DocumentIdentifier, m.GLOBALEVENTID
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`  g
+  JOIN `gdelt-bq.gdeltv2.eventmentions`    m
+    ON g.DocumentIdentifier = m.MentionIdentifier
+  WHERE _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')
+    AND g.TranslationInfo LIKE '%srclc:zho%'
+    AND (g.V2Themes LIKE '%ECONOMY%' OR g.V2Themes LIKE '%FINANCE%' 
+         OR g.V2Themes LIKE '%BUSINESS%' OR g.V2Themes LIKE '%MARKET%')
+  LIMIT 7000)
+  
+  UNION ALL
+  
+  ------------------------------------------------------------------
+  -- Spanish 7k
+  ------------------------------------------------------------------
+  (SELECT 'es', g.DocumentIdentifier, m.GLOBALEVENTID
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`  g
+  JOIN `gdelt-bq.gdeltv2.eventmentions`    m
+    ON g.DocumentIdentifier = m.MentionIdentifier
+  WHERE _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')
+    AND g.TranslationInfo LIKE '%srclc:spa%'
+    AND (g.V2Themes LIKE '%ECONOMY%' OR g.V2Themes LIKE '%FINANCE%' 
+         OR g.V2Themes LIKE '%BUSINESS%' OR g.V2Themes LIKE '%MARKET%')
+  LIMIT 7000)
+  
+  UNION ALL
+  
+  ------------------------------------------------------------------
+  -- arabic 7k
+  ------------------------------------------------------------------
+  (SELECT 'ar', g.DocumentIdentifier, m.GLOBALEVENTID
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`  g
+  JOIN `gdelt-bq.gdeltv2.eventmentions`    m
+    ON g.DocumentIdentifier = m.MentionIdentifier
+  WHERE _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')
+    AND g.TranslationInfo LIKE '%srclc:ara%'
+    AND (g.V2Themes LIKE '%ECONOMY%' OR g.V2Themes LIKE '%FINANCE%' 
+         OR g.V2Themes LIKE '%BUSINESS%' OR g.V2Themes LIKE '%MARKET%')
+  LIMIT 7000)
+  
+  UNION ALL
+  
+  ------------------------------------------------------------------
+  -- en 7k
+  ------------------------------------------------------------------
+  (SELECT 'en', g.DocumentIdentifier, m.GLOBALEVENTID
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`  g
+  JOIN `gdelt-bq.gdeltv2.eventmentions`    m
+    ON g.DocumentIdentifier = m.MentionIdentifier
+  WHERE _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2025-01-01')
+    AND g.TranslationInfo IS NULL              -- 英语
+    AND (g.V2Themes LIKE '%ECONOMY%' OR g.V2Themes LIKE '%FINANCE%' 
+         OR g.V2Themes LIKE '%BUSINESS%' OR g.V2Themes LIKE '%MARKET%')
+  LIMIT 7000)
+)
+
+-- use dfferent query file from now on. 
+--Use these event_ids to supplement the four-language parallel reports + expand fields
+SELECT
+  m.GLOBALEVENTID,
+  CASE 
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:zho%' THEN 'zh'
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:spa%' THEN 'es'
+    WHEN m.MentionDocTranslationInfo LIKE '%srclc:ara%' THEN 'ar'
+    WHEN m.MentionDocTranslationInfo IS NULL            THEN 'en'
+  END                       AS lang,
+  m.MentionIdentifier       AS url,
+  m.MentionSourceName       AS source,
+  m.Confidence              AS mention_conf,
+  m.MentionDocTone          AS doc_tone,
+  e.SQLDATE,
+  e.SQLDATE AS day,
+  e.EventCode,
+  e.EventRootCode,
+  e.Actor1CountryCode,
+  g.V2Themes,
+  g.GCAM,
+  g.V2Tone
+FROM `gdelt-bq.gdeltv2.eventmentions`   m
+JOIN `gdelt-bq.gdeltv2.events`          e  ON m.GLOBALEVENTID = e.GLOBALEVENTID
+JOIN `gdelt-bq.gdeltv2.gkg_partitioned` g  ON m.MentionIdentifier = g.DocumentIdentifier
+WHERE m.GLOBALEVENTID IN (
+  SELECT DISTINCT GLOBALEVENTID FROM t_lang_sample
+)
+  -- keep the 4 target lang only, filter the rst
+  AND (
+       m.MentionDocTranslationInfo LIKE '%srclc:zho%'
+    OR m.MentionDocTranslationInfo LIKE '%srclc:spa%'
+    OR m.MentionDocTranslationInfo LIKE '%srclc:ara%'
+    OR m.MentionDocTranslationInfo IS NULL
+  )
+ORDER BY m.GLOBALEVENTID, lang;
