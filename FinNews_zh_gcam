@@ -1,0 +1,21 @@
+CREATE OR REPLACE TABLE `finnews02.FinNews_US.FinNews_zh_gcam` AS
+SELECT
+  url,
+  V2Themes,
+  V2Tone,
+  ts,
+  lang,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.recession') AS recession,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.growth') AS growth,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.inflation') AS inflation,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.deflation') AS deflation,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.stock_market') AS stock_market,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.consumer_confidence') AS consumer_confidence,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.business_confidence') AS business_confidence,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.investment') AS investment,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.debt') AS debt,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.taxes') AS taxes,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.policy_change') AS policy_change,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.regulation') AS regulation,
+  JSON_EXTRACT_SCALAR(GCAM, '$.gcam.corruption') AS corruption
+FROM `finnews02.FinNews_US.FinNews_zh`;
