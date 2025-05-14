@@ -10,19 +10,19 @@ pre dataset buiding work for MISCADA dissertation with OW. parallel news data in
 
 I plan to construct a multilingual parallel corpus with a specific structure to enable more granular comparative analysis. For each source-language record, collect multiple translations in other languages. 
 For example, collect 8,000 original records in Chinese (A), 8,000 in English (B), 8,000 in Spanish (C), and 8,000 in Arabic (D). Each of these source-language datasets is supposed to have translation versions in the other three languages when doing query:
-	•	A (Chinese originals) will have corresponding translations:
+1. A (Chinese originals) will have corresponding translations:
 		A1: English
 	  A2: Spanish
 		A3: Arabic
-	•	B (English originals) will have:
+2. B (English originals) will have:
 		B1: Chinese
   	B2: Spanish
 		B3: Arabic
-	•	C (Spanish originals) will have:
+3. C (Spanish originals) will have:
 		C1: Chinese
 		C2: English
 		C3: Arabic
-	•	D (Arabic originals) will have:
+4. D (Arabic originals) will have:
 		D1: Chinese
 		D2: English
 		D3: Spanish
