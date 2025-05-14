@@ -1,0 +1,37 @@
+!pip install newspaper3k tqdm
+from google.colab import files
+
+
+uploaded = files.upload()
+
+import pandas as pd
+
+
+df = pd.read_csv("zh+trans.csv")
+
+urls = df["url"].dropna().unique().tolist()
+print(f"ready to get {len(urls)} article")
+from newspaper import Article
+from tqdm import tqdm
+import time
+
+def extract_article_text(url):
+    try:
+        article = Article(url)
+        article.download()
+        article.parse()
+        return article.text
+    except Exception:
+        return None
+
+texts = []
+
+for url in tqdm(urls):
+    text = extract_article_text(url)
+    texts.append(text)
+    time.sleep(0.5)  
+
+df["content"] = texts
+
+df.to_csv("zh_content_scraped.csv", index=False)
+print("saved as zh_content_scraped.csv")
