@@ -1,0 +1,20 @@
+!pip install transformers
+from huggingface_hub import login
+
+login("cannot add")  
+
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# load
+model_name = "uer/chinese-roberta-base-chinese-summarization"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+def generate_summary(text):
+    inputs = tokenizer("summarize: " + text, return_tensors="pt", max_length=512, truncation=True)
+    output = model.generate(inputs.input_ids, max_length=128, num_beams=4, length_penalty=2.0)
+    return tokenizer.decode(output[0], skip_special_tokens=True)
+
+# sample
+sample_text = df["content"].dropna().iloc[0]
+print("abstract output：", generate_summary(sample_text))
