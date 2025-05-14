@@ -36,9 +36,22 @@ Therefore, when storing data from each source language, I will not only retain t
 In sum, we will generate two types of datasets for any target language like Chinese:
 	1.	A native-language dataset (e.g., original Chinese texts).
 	2.	A translated-language dataset (e.g., Chinese texts translated from English, Spanish, and Arabic).
-
+ 
+## strategy shift
 idea: 
 These two datasets can then be used as separate training sets for language models, allowing me to conduct experiments to analyze differences between models trained on native vs. translated text — effectively introducing an additional axis for comparison in my multilingual LLM research.
+
+idea quit & alt ~_~, because the free token of BigQuery was used up.
+
+The initial plan was to construct a parallel multilingual dataset — collecting news articles about the same event in four languages (Chinese, English, Spanish, Arabic) — to evaluate the cross-lingual performance of language-agnostic LLMs.
+
+However, after querying GDELT, it was found that the number of events covered in all four languages is extremely limited, even with a broad time range and relaxed filters. GDELT stores different reports on the same event, but they are not guaranteed to be translations or semantically equivalent across languages.
+
+Given this limitation, the focus will shift to building balanced, domain-consistent datasets for each language separately (e.g., 8,000 finance-related articles per language). 
+This allows for fair comparison of classification, summarization, and embedding behavior across languages, without relying on exact parallel content.
+
+Parallel examples may still be used for small-scale qualitative analysis, but will not be the main dataset structure.
+
 
 
 #### porblem faced and solved 
