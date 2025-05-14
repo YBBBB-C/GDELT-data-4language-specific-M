@@ -43,7 +43,9 @@ These two datasets can then be used as separate training sets for language model
 
 #### porblem faced and solved 
 The previous Chinese and Spanish datasets set the time stamp from 2022.1.1 to 2025.1.1. When building the anchor dataset, especially for Arabic translation. 
-Solution 1. dump Arabic 2. rebuild data set, set restrict 
+Solution 1. dump Arabic 2. rebuild dataset see ‘8k’
+
+
 
 
 
