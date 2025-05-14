@@ -3,6 +3,10 @@ pre dataset buiding work for MISCADA dissertation with OW. parallel news data in
 
 ## 5.7，5.14
 
+
+IDEA-CCNL/Erlangshen-Roberta-110M-Sentiment
+
+shibing624/text2vec-base-chinese
 #### todo：literature review included 3 documents -- due 23 May
 1. a Literature review and Project plan, which should be in total no more than 8 pages,
 2. the Ethical Assessment form (if needed for the particular project), and
