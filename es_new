@@ -1,0 +1,52 @@
+-- for each source language, we select about 5k lines, marking its 
+--Spanish table(balanced over 2022-2024)
+WITH es_2022 AS (
+  SELECT DocumentIdentifier AS url, V2Themes, V2Tone, GCAM, _PARTITIONTIME AS ts, 'es' AS lang
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`
+  WHERE 
+    _PARTITIONTIME BETWEEN TIMESTAMP('2022-01-01') AND TIMESTAMP('2023-01-01')
+    AND TranslationInfo LIKE '%srclc:spa%'
+    AND (
+      V2Themes LIKE '%ECONOMY%' OR 
+      V2Themes LIKE '%FINANCE%' OR 
+      V2Themes LIKE '%BUSINESS%' OR 
+      V2Themes LIKE '%MARKET%'
+    )
+  LIMIT 1666
+),
+
+es_2023 AS (
+  SELECT DocumentIdentifier AS url, V2Themes, V2Tone, GCAM, _PARTITIONTIME AS ts, 'es' AS lang
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`
+  WHERE 
+    _PARTITIONTIME BETWEEN TIMESTAMP('2023-01-01') AND TIMESTAMP('2024-01-01')
+    AND TranslationInfo LIKE '%srclc:spa%'
+    AND (
+      V2Themes LIKE '%ECONOMY%' OR 
+      V2Themes LIKE '%FINANCE%' OR 
+      V2Themes LIKE '%BUSINESS%' OR 
+      V2Themes LIKE '%MARKET%'
+    )
+  LIMIT 1666
+),
+
+es_2024 AS (
+  SELECT DocumentIdentifier AS url, V2Themes, V2Tone, GCAM, _PARTITIONTIME AS ts, 'es' AS lang
+  FROM `gdelt-bq.gdeltv2.gkg_partitioned`
+  WHERE 
+    _PARTITIONTIME BETWEEN TIMESTAMP('2024-01-01') AND TIMESTAMP('2025-01-01')
+    AND TranslationInfo LIKE '%srclc:spa%'
+    AND (
+      V2Themes LIKE '%ECONOMY%' OR 
+      V2Themes LIKE '%FINANCE%' OR 
+      V2Themes LIKE '%BUSINESS%' OR 
+      V2Themes LIKE '%MARKET%'
+    )
+  LIMIT 1668
+)
+
+SELECT * FROM es_2022
+UNION ALL
+SELECT * FROM es_2023
+UNION ALL
+SELECT * FROM es_2024;
