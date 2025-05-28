@@ -1,6 +1,56 @@
 # GDELT-data-4language-specific-M
 pre dataset buiding work for MISCADA dissertation with OW. parallel news data in 4 target languages (en, spa, zh, er) selected from GDELT database gkg, events, and mentions which allow Google BigQuery to manipulate
 
+## 5.28
+
+Based on the completed data acquisition, I have obtained four cleaned datasets: 
+1. es7k5_with_content.csv
+2. ar7k5_with_clean_content.csv
+3. en7k5_with_clean_content.csv
+4. zh7k5_with_clean_content.csv.
+ The next steps involve generating semantic embeddings and evaluating cross-lingual similarity.  I plan to use the XLM-RoBERTa Base model (from sentence-transformers) for its robust multilingual capabilities across 100+ languages, suitable for sentence-level embeddings.
+
+·Planned Workflow:
+1. Embedding Generation:
+Load each dataset (Chinese, English, Spanish, Arabic).
+Use sentence-transformers/xlm-r-bert-base-nli-stsb-mean-tokens to encode news content into embeddings.
+2. Semantic Similarity Measurement:
+Compute cosine similarity between embeddings across languages.
+Test case: Select a Chinese news article, find the most similar Spanish article, and manually verify semantic alignment.
+Reverse test: Start with an Arabic article and identify the closest English article.
+3. Validation Experiments (plan）:
+E1: Rank top-5 similar Chinese-Spanish article pairs by embedding similarity and manually assess content similarity.
+E2: Check if articles with shared themes (e.g., “stock market decline”) cluster closely across languages in the embedding space. --KNN
+E3: Compare XLM-RoBERTa Base results with LaBSE to evaluate consistency in language-agnostic semantic encoding.
+Per Prof. Philip’s advice: “Encode articles from different languages and check if they land near each other in vector space.” This suggests directly encoding all articles, measuring embedding proximity, and validating semantic similarity by reviewing original content.
+
+Next
+Implement embedding generation with XLM-RoBERTa **Base**.
+Conduct similarity tests and validation experiments.
+Prepare findings for discussion, focusing on whether embeddings capture language-agnostic semantics.
+
+
+
+
+
+
+
+
+4.5秒
+How can Grok help?
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 5.7，5.14
 
 
