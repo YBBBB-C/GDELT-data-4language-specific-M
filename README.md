@@ -36,10 +36,6 @@ Prepare findings for discussion, focusing on whether embeddings capture language
 
 
 
-4.5秒
-How can Grok help?
-
-
 
 
 
