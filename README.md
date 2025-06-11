@@ -1,6 +1,27 @@
 # GDELT-data-4language-specific-M
 pre dataset buiding work for MISCADA dissertation with OW. parallel news data in 4 target languages (en, spa, zh, er) selected from GDELT database gkg, events, and mentions which allow Google BigQuery to manipulate
 
+
+## 6.11
+
+
+
+## 6.3 
+Used LaBSE (sentence transformer) instead of the XLM model for embedding 
+
+Evaluate whether machine translation contents have a deviation from the original English news in the semantic space
+| group | content         | languafe  | source         | purpose                |
+| -- | --------- | -- | ----------- | ------------------ |
+| A  | original en news    | en | en sourse article    | baseline/semantic distribution  |
+| B  | zh->en  | en | chinese news+machien translation | Check for distribution drift |
+
+
+
+### files
+zh7k5_with_clean_content.csv
+zh7k5_with_embeddings.parquet
+
+
 ## 5.28
 
 Based on the completed data acquisition, I have obtained four cleaned datasets: 
