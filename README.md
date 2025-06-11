@@ -2,25 +2,22 @@
 pre dataset buiding work for MISCADA dissertation with OW. parallel news data in 4 target languages (en, spa, zh, er) selected from GDELT database gkg, events, and mentions which allow Google BigQuery to manipulate
 
 
-## 6.11
+## 6.3  6.11
 
-
-
-## 6.3 
 Used LaBSE (sentence transformer) instead of the XLM model for embedding 
 
-Evaluate whether machine translation contents have a deviation from the original English news in the semantic space
+Evaluate whether machine translation contents have a **deviation** from the original English news in the semantic space
 | group | content         | languafe  | source         | purpose                |
 | -- | --------- | -- | ----------- | ------------------ |
 | A  | original en news    | en | en sourse article    | baseline/semantic distribution  |
 | B  | zh->en  | en | chinese news+machien translation | Check for distribution drift |
 
-1.  Helsinki-NLP/opus-mt-zh-en model for translation---see zh2en
+1.  Helsinki-NLP/opus-mt-zh-en model for translation 
 2.  Generate English semantic embeddings for two groups
 3.  Merge them into one dataframe
-4.  Can use: ·t-SNE / UMAP for embedding dimensionality reduction · Use color = source to visualize "whether it is divisible" If it can be separated (A and B gather in different regions) 
+4.  Dimensional reduction + visual analysis【Can use: ·t-SNE / UMAP for embedding dimensionality reduction · Use color = source to visualize "whether it is divisible" If it can be separated (A and B gather in different regions) 】
 
-The model detects that the semantic distribution of the machine-translated corpus and the native corpus is different ➝ Existing bias
+c if the model detects that the semantic distribution of the machine-translated corpus and the native corpus is different ➝ Existing bias
 
 
 ### files
