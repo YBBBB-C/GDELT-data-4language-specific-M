@@ -15,6 +15,12 @@ Evaluate whether machine translation contents have a deviation from the original
 | A  | original en news    | en | en sourse article    | baseline/semantic distribution  |
 | B  | zh->en  | en | chinese news+machien translation | Check for distribution drift |
 
+1.  Helsinki-NLP/opus-mt-zh-en model for translation---see zh2en
+2.  Generate English semantic embeddings for two groups
+3.  Merge them into one dataframe
+4.  Can use: ·t-SNE / UMAP for embedding dimensionality reduction · Use color = source to visualize "whether it is divisible" If it can be separated (A and B gather in different regions) 
+
+The model detects that the semantic distribution of the machine-translated corpus and the native corpus is different ➝ Existing bias
 
 
 ### files
