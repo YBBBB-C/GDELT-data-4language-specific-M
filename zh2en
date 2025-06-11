@@ -1,0 +1,53 @@
+
+
+
+from transformers import pipeline
+import pandas as pd
+from tqdm import tqdm
+import time
+
+# Load cleaned Chinese data
+df_zh = pd.read_csv("zh7k5_with_clean_content.csv")
+df_zh = df_zh[df_zh['content'].notna() & (df_zh['content'].str.len() > 0)].reset_index(drop=True)
+df_zh = df_zh.iloc[:500].copy()
+print(f"Total rows to translate: {len(df_zh)}")
+
+# Translation model (zh -> en)
+translator = pipeline(
+    task="translation",
+    model="Helsinki-NLP/opus-mt-zh-en",
+    device=0,
+    token="hf_x x x” # hide token for security
+
+)
+
+# Helper function: split long text into chunks
+def split_text(text, chunk_size=350):
+    return [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
+
+translated_texts = []
+start_time = time.time()
+
+for idx, row in tqdm(df_zh.iterrows(), total=len(df_zh), desc="Translating"):
+    text = row['content']
+    
+    try:
+        chunks = split_text(text, chunk_size=350)
+        translated_chunks = []
+
+        for chunk in chunks:
+            result = translator(chunk, max_length=512)
+            translated_chunks.append(result[0]['translation_text'])
+
+        translated_texts.append(" ".join(translated_chunks))
+
+    except Exception as e:
+        print(f"[Error] at row {idx}: {e}")
+        translated_texts.append(None)
+
+df_zh['content_en_trans'] = translated_texts
+
+elapsed = time.time() - start_time
+print(f"\nTranslation completed in {elapsed / 60:.2f} minutes.")
+df_zh.to_parquet("zh7k5_translated_en500.parquet", index=False)
+print("Saved translated file: zh7k5_translated_en.parquet")
