@@ -3,11 +3,12 @@ pre dataset buiding work for MISCADA dissertation with OW. parallel news data in
 
 
 ## 6.3  6.11
+code see zh_en.ipynb
 
 Used LaBSE (sentence transformer) instead of the XLM model for embedding 
 
 Evaluate whether machine translation contents have a **deviation** from the original English news in the semantic space
-| group | content         | languafe  | source         | purpose                |
+| group | content         | language  | source         | purpose                |
 | -- | --------- | -- | ----------- | ------------------ |
 | A  | original en news    | en | en sourse article    | baseline/semantic distribution  |
 | B  | zh->en  | en | chinese news+machien translation | Check for distribution drift |
@@ -19,11 +20,13 @@ Evaluate whether machine translation contents have a **deviation** from the orig
 
 c if the model detects that the semantic distribution of the machine-translated corpus and the native corpus is different ➝ Existing bias
 
-
 ### files
 zh7k5_with_clean_content.csv
 zh7k5_with_embeddings.parquet
+。。。
 
+### tbd
+abstract 1. generative abstract 2. extractive (no training)
 
 ## 5.28
 
