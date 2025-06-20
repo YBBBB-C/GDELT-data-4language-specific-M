@@ -2,6 +2,14 @@
 pre dataset buiding work for MISCADA dissertation with OW. news dataset in 4 target languages (en, spa, zh, er) selected from GDELT database gkg, events, and mentions which allow Google BigQuery to manipulate
 
 
+## 6.20
+As suggested in the last meeting, the t-SNE figure is not performing well, needs a manual check
+
+change machine translation model to facebook/nllb-200-distilled-600M (the former one has bias issue)
+
+Extractive Summarization  vs Abstractive Summarization
+
+
 ## 6.3  6.11
 code see zh_en.ipynb
 
