@@ -6,7 +6,8 @@ pre dataset buiding work for MISCADA dissertation with OW. news dataset in 4 tar
 As suggested in the last meeting, the t-SNE figure is not performing well, needs a manual check
 （Loads two sets of sentence embeddings — one for the translated Chinese text (label = 0), and one for the original English text (label = 1).
 Stacks the two embedding arrays into a single array for comparison.Calculates the pairwise cosine distance between all embeddings. The diagonal is set to infinity to avoid comparing a sentence with itself.
-change machine translation model to facebook/nllb-200-distilled-600M (the former one has bias issue)
+
+1.change machine translation model to facebook/nllb-200-distilled-600M (the former one has bias issue)
 
 |Extractive Summarization |vs|       Abstractive Summarization|
 |https://arxiv.org/abs/1908.08345  ：Text Summarization with Pretrained Encoders||
